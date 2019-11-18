@@ -157,7 +157,7 @@ NSArray *svgParser::parse(NSMapTable ** const aoAttributes)
         } else if(type == XML_READER_TYPE_ELEMENT && !xmlTextReaderIsEmptyElement(_xmlReader))
             ++depthWithinUnknownElement;
         if(path) {
-            [paths addObject:CFBridgingRelease(path)];
+            [[groupArrayStack lastObject] addObject:CFBridgingRelease(path)];
             
             if(aoAttributes) {
                 NSDictionary * const attributes = readAttributes();
