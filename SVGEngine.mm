@@ -137,13 +137,14 @@ NSArray *svgParser::parse(NSMapTable ** const aoAttributes)
         else if(type == XML_READER_TYPE_ELEMENT && strcasecmp(tag, "ellipse") == 0)
             path = readEllipseTag();
         else if(strcasecmp(tag, "g") == 0 || strcasecmp(tag, "a") == 0) {
-            if(type == XML_READER_TYPE_ELEMENT)
+            if(type == XML_READER_TYPE_ELEMENT) {
                 pushGroup(readAttributes());
             
                 if(_shouldNestGroups) {
                     [groupArrayStack addObject:[NSMutableArray new]];
                 }
-            else if(type == XML_READER_TYPE_END_ELEMENT)
+            }
+            else if(type == XML_READER_TYPE_END_ELEMENT) {
                 
                 if(_shouldNestGroups) {
                     NSMutableArray *poppedGroup = [groupArrayStack lastObject];
@@ -154,6 +155,7 @@ NSArray *svgParser::parse(NSMapTable ** const aoAttributes)
                 }
             
                 popGroup();
+            }
         } else if(type == XML_READER_TYPE_ELEMENT && !xmlTextReaderIsEmptyElement(_xmlReader))
             ++depthWithinUnknownElement;
         if(path) {
