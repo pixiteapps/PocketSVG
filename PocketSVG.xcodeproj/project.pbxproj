@@ -11,6 +11,7 @@
 		1DC5ADD41CC9B17A008FDA98 /* SVGBezierPath.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DC5ADD11CC9B17A008FDA98 /* SVGBezierPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1DC5ADD51CC9B17A008FDA98 /* SVGBezierPath.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1DC5ADD21CC9B17A008FDA98 /* SVGBezierPath.mm */; };
 		1DC5ADD61CC9B17A008FDA98 /* SVGBezierPath.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1DC5ADD21CC9B17A008FDA98 /* SVGBezierPath.mm */; };
+		598785BF2440DC6200EBCFC0 /* test_dancer.svg in Resources */ = {isa = PBXBuildFile; fileRef = 598785BE2440DC6200EBCFC0 /* test_dancer.svg */; };
 		B0AAE5E720E1094100819A84 /* SVGEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = C79800DB1A21CB9A00380860 /* SVGEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B0AAE5E820E1094100819A84 /* SVGEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = C79800DB1A21CB9A00380860 /* SVGEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B0B5921C207510AC0009ECA2 /* SVGColors.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0B5921B207510AC0009ECA2 /* SVGColors.plist */; };
@@ -50,6 +51,7 @@
 /* Begin PBXFileReference section */
 		1DC5ADD11CC9B17A008FDA98 /* SVGBezierPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGBezierPath.h; sourceTree = "<group>"; };
 		1DC5ADD21CC9B17A008FDA98 /* SVGBezierPath.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SVGBezierPath.mm; sourceTree = "<group>"; };
+		598785BE2440DC6200EBCFC0 /* test_dancer.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = test_dancer.svg; sourceTree = "<group>"; };
 		B07359AE20755E0900D88B19 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		B0B5921B207510AC0009ECA2 /* SVGColors.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SVGColors.plist; sourceTree = SOURCE_ROOT; };
 		B0B5922B20752E980009ECA2 /* PocketSVGTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PocketSVGTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,6 +106,7 @@
 		B0B5922C20752E980009ECA2 /* PocketSVGTests */ = {
 			isa = PBXGroup;
 			children = (
+				598785BE2440DC6200EBCFC0 /* test_dancer.svg */,
 				B0B5922D20752E980009ECA2 /* PocketSVGTests.swift */,
 				B0B5922F20752E980009ECA2 /* Info.plist */,
 				B0B59246207532D40009ECA2 /* test_rectangle.svg */,
@@ -292,6 +295,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B0B59249207532D40009ECA2 /* test_tiger.svg in Resources */,
+				598785BF2440DC6200EBCFC0 /* test_dancer.svg in Resources */,
 				B0B59248207532D40009ECA2 /* test_rectangle.svg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -374,6 +378,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = PocketSVGTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -552,6 +561,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -582,6 +596,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_OPTIMIZATION_LEVEL = s;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,

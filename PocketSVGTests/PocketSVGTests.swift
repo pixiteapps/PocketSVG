@@ -38,6 +38,18 @@ class PocketSVGTests: XCTestCase {
         XCTAssert(rectanglePath.svgAttributes["height"] as! String == "100px")
     }
 
+    // this test is for grouped svgs.
+    // our nested path feature on this fork was crashing when dealing with a grouped svg AND was run with compiler optimization (smallest/fastest).
+    // this project's debug configs are now set to smallest/fastest so this test just needs to parse the svg and complete with a non empty path
+    func testPathsFromDancer() {
+        let testBundle = Bundle(for: type(of: self))
+        let svgURL = testBundle.url(forResource: "test_dancer", withExtension: "svg")!
+        let paths = SVGBezierPath.pathsFromSVG(at: svgURL)
+
+        XCTAssert(paths.count > 0)
+    }
+
+
     func testPathsFromTiger() {
         let testBundle = Bundle(for: type(of: self))
         let svgURL = testBundle.url(forResource: "test_tiger", withExtension: "svg")!

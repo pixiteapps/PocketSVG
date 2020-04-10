@@ -20,7 +20,7 @@ NSString * const kValidSVGCommands = @"CcMmLlHhVvZzQqTtAaSs";
 struct svgParser {
     svgParser(NSString *);
     NSArray *parse(NSMapTable **aoAttributes);
-    BOOL _shouldNestGroups;
+    BOOL _shouldNestGroups = false;
 
 protected:
     NSString *_source;
