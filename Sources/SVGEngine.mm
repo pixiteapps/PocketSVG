@@ -541,14 +541,14 @@ CF_RETURNS_RETAINED CGMutablePathRef pathDefinitionParser::parse()
             scanner.scanLocation -= [cmdBuf length]-1;
         } else {
             while (!scanner.isAtEnd) {
-                NSUInteger zeros = 0;
-                while ([scanner scanString:@"0" intoString:NULL]) { ++zeros; }
-                // Start of a 0.x ?
-                if (zeros > 0 && [scanner scanString:@"." intoString:NULL]) {
-                    --zeros;
-                    scanner.scanLocation -= 2;
-                }
-                for (NSUInteger i = 0; i < zeros; ++i) { _operands.push_back(0.0); }
+//                NSUInteger zeros = 0;
+//                while ([scanner scanString:@"0" intoString:NULL]) { ++zeros; }
+//                // Start of a 0.x ?
+//                if (zeros > 0 && [scanner scanString:@"." intoString:NULL]) {
+//                    --zeros;
+//                    scanner.scanLocation -= 2;
+//                }
+//                for (NSUInteger i = 0; i < zeros; ++i) { _operands.push_back(0.0); }
 
                 float operand;
                 if (![scanner scanFloat:&operand]) {
