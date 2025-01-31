@@ -50,12 +50,26 @@ FOUNDATION_EXTERN void SVGDrawPathsWithBlock(NSArray<SVGBezierPath*> * const pat
  */
 + (NSArray<SVGBezierPath*> *)pathsFromSVGAtURL:(NSURL *)aURL;
 
+/*!
+ * @brief Returns nested arrays of SVGBezierPaths given an SVG's URL.
+ *
+ * @param aURL The URL from which to load an SVG.
+ *
+ */
++ (NSArray<SVGBezierPath*> *)nestedPathsFromSVGAtURL:(NSURL *)aURL;
+
 
 /*!
  * @brief Returns an array of paths given the XML string of an SVG.
  *
  */
 + (NSArray<SVGBezierPath*> *)pathsFromSVGString:(NSString *)svgString;
+
+/*!
+* @brief Returns nested arrays  of  paths given the XML string of an SVG.
+*
+*/
++ (NSArray<NSObject*> *)nestedPathsFromSVGString:(NSString * const)svgString;
 
 /*!
  * @brief Returns a new path with the values of `attributes` added to `svgAttributes`
