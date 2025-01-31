@@ -9,13 +9,16 @@
 import Cocoa
 import PocketSVG
 
-@NSApplicationMain
+@main
 class AppDelegate: NSObject, NSApplicationDelegate {}
 
 class DemoController: NSViewController {
     override func loadView() {
         let url = Bundle.main.url(forResource: "iceland", withExtension: "svg")!
-        view = SVGImageView.init(contentsOf: url)
+        let j = SVGImageView(contentsOf: url)
+        print(j.viewBox == .null)
+        view = j
+
         view.frame = NSRect(x: 0, y: 0, width: 300, height: 200)
     }
 }

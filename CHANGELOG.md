@@ -2,7 +2,30 @@
 All notable changes to this project will be documented in this file. Items under **Unreleased** are currently available on **master**'s HEAD, but not yet tagged.
 
 ## [Unreleased]
+### Fixes
+
+## [2.7.3]
+### Fixes
+- Support for shortcuts with leading zeros as described in issue (https://github.com/pocketsvg/PocketSVG/issues/204) [Vladimir Roganov](https://github.com/elisar4) [#205](https://github.com/pocketsvg/PocketSVG/pull/205)
+
+- Prevents the program from crashing when the color passed in is not of the correct type [CodeForRabbit](https://github.com/CodeForRabbit) [#214](https://github.com/pocketsvg/PocketSVG/pull/214)
+
+## [2.7.2]
+### Fixes
+- Find named colour tags plist when using SPM.
+
+## [2.7.1]
+### Fixes
+- Address Xcode 13 related warnings. [Sergio Baró](https://www.github.com/sergiobaro) [#195](https://github.com/pocketsvg/PocketSVG/pull/195)
+
+## [2.7.0]
 ### New Features
+- Support for `viewBox` tag. [Alessio Prosperi](https://github.com/NeedNap)
+ and [Ariel Elkin](https://github.com/arielelkin) [#181](https://github.com/pocketsvg/PocketSVG/pull/181) and [#185](https://github.com/pocketsvg/PocketSVG/pull/185).
+
+## [2.6.0]
+### New Features
+- Xcode 12 and SPM Support. [Ariel Elkin](https://github.com/arielelkin), [#178](https://github.com/pocketsvg/PocketSVG/pull/178/)
 - New API method for clients to convert single path string into CGPath. [Scott Sykora
 ](https://github.com/scottsykora), [#172](https://github.com/pocketsvg/PocketSVG/pull/172) 
 
@@ -150,7 +173,12 @@ Changes by Ariel Elkin unless otherwise specified.
 - Substituted CC license with MIT license.
 
 
-[Unreleased]: https://github.com/pocketsvg/PocketSVG/compare/2.5.0...HEAD
+[Unreleased]: https://github.com/pocketsvg/PocketSVG/compare/2.7.3...HEAD
+[2.7.3]: https://github.com/pocketsvg/PocketSVG/compare/2.7.2...2.7.3
+[2.7.2]: https://github.com/pocketsvg/PocketSVG/compare/2.7.1...2.7.2
+[2.7.1]: https://github.com/pocketsvg/PocketSVG/compare/2.7.0...2.7.1
+[2.7.0]: https://github.com/pocketsvg/PocketSVG/compare/2.6.0...2.7.0
+[2.6.0]: https://github.com/pocketsvg/PocketSVG/compare/2.5.0...2.6.0
 [2.5.0]: https://github.com/pocketsvg/PocketSVG/compare/2.4.2...2.5.0
 [2.4.2]: https://github.com/pocketsvg/PocketSVG/compare/2.4.1...2.4.2
 [2.4.1]: https://github.com/pocketsvg/PocketSVG/compare/2.4.0...2.4.1

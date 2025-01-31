@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
+#import <libxml2/libxml/xmlreader.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -60,6 +61,7 @@ NSString *SVGStringFromCGPaths(NSArray *paths, SVGAttributeSet *attributes);
 
 @interface SVGAttributeSet : NSObject <NSCopying, NSMutableCopying>
 - (NSDictionary<NSString*,id> *)attributesForPath:(CGPathRef)path;
+@property(nonatomic, readonly) CGRect viewBox;
 @end
 @interface SVGMutableAttributeSet : SVGAttributeSet
 - (void)setAttributes:(NSDictionary<NSString*,id> *)attributes forPath:(CGPathRef)path;
