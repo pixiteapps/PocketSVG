@@ -570,22 +570,29 @@ CF_RETURNS_RETAINED CGMutablePathRef pathDefinitionParser::parse()
         if([cmdBuf length] > 1) {
             scanner.scanLocation -= [cmdBuf length]-1;
         } else {
-            while (!scanner.isAtEnd) {
-                NSUInteger zeros = 0;
-                while ([scanner scanString:@"0" intoString:NULL]) { ++zeros; }
-                // Start of a 0.x ?
-                if (zeros > 0 && [scanner scanString:@"." intoString:NULL]) {
-                    --zeros;
-                    scanner.scanLocation -= 2;
-                }
-                for (NSUInteger i = 0; i < zeros; ++i) { _operands.push_back(0.0); }
-
-                float operand;
-                if (![scanner scanFloat:&operand]) {
-                    break;
-                }
-                _operands.push_back(operand);
-            }
+            
+            for(float operand;
+                [scanner scanFloat:&operand];
+                _operands.push_back(operand));
+            
+//            // the code below doesn't seem to account for - signs properly when parsing. I'm reverting to the previous parsing method here because that seems to work with all of our studio content.
+//            while (!scanner.isAtEnd) {
+//                NSUInteger zeros = 0;
+//                while ([scanner scanString:@"0" intoString:NULL]) { ++zeros; }
+//                // Start of a 0.x ?
+//                if (zeros > 0 && [scanner scanString:@"." intoString:NULL]) {
+//                    --zeros;
+//                    scanner.scanLocation -= 2;
+//                }
+//                for (NSUInteger i = 0; i < zeros; ++i) { _operands.push_back(0.0); }
+//
+//                float operand;
+//                if ([scanner scanFloat:&operand]) {
+//                    _operands.push_back(operand);
+//                } else {
+//                    break;
+//                }
+//            }
         }
 
 #ifdef SVG_PATH_SERIALIZER_DEBUG
