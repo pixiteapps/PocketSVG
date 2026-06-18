@@ -47,20 +47,20 @@ jobs:
       - name: Lint Podspec
         run: pod lib lint --allow-warnings
 
-  xcframework:
-    name: XCFramework
-    runs-on: macOS-13
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Build XCFramework
-        run: ci/build_xcframework.sh
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: PocketSVG.xcframework
-          path: derived_data/xcframework/PocketSVG.xcframework
-          retention-days: 5
+#   xcframework:
+#     name: XCFramework
+#     runs-on: macOS-13
+#     steps:
+#       - uses: actions/checkout@v4
+# 
+#       - name: Build XCFramework
+#         run: ci/build_xcframework.sh
+# 
+#       - uses: actions/upload-artifact@v4
+#         with:
+#           name: PocketSVG.xcframework
+#           path: derived_data/xcframework/PocketSVG.xcframework
+#           retention-days: 5
 
   create-release:
     name: Make release

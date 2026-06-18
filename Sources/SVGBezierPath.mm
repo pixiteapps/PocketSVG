@@ -54,6 +54,20 @@
     return [[NSArray alloc] initWithArray:paths copyItems:YES];
 }
 
++ (NSArray<NSObject*> *)nestedPathsFromSVGAtURL:(NSURL *)aURL
+{
+    NSArray<SVGBezierPath*> *paths = [self.class._svg_pathCache objectForKey:aURL];
+    if (!paths) {
+        paths =  [self nestedPathsFromSVGString:[NSString stringWithContentsOfURL:aURL
+                                                               usedEncoding:NULL
+                                                                      error:NULL]];
+        if (paths) {
+            [self.class._svg_pathCache setObject:paths forKey:aURL];
+        }
+    }
+    return [[NSArray alloc] initWithArray:paths copyItems:YES];
+}
+
 + (NSArray<SVGBezierPath*> *)pathsFromSVGString:(NSString * const)svgString
 {
     SVGAttributeSet *cgAttrs;
@@ -64,6 +78,29 @@
         uiPath->_svgAttributes = [cgAttrs attributesForPath:(__bridge CGPathRef)pathRef] ?: @{};
         uiPath.lineWidth = uiPath->_svgAttributes[@"stroke-width"] ? [uiPath->_svgAttributes[@"stroke-width"] doubleValue] : 1.0;
         [paths addObject:uiPath];
+    }
+    return paths;
+}
+
++ (NSArray<NSObject*> *)nestedPathsFromSVGString:(NSString * const)svgString
+{
+    SVGAttributeSet *cgAttrs;
+    NSArray * const pathRefs = NestedCGPathsFromSVGString(svgString, &cgAttrs);
+    return [self convertedPaths:pathRefs attrs:cgAttrs];
+}
+
++(NSArray *)convertedPaths:(NSArray *)pathRefs attrs:(SVGAttributeSet *)cgAttrs {
+    NSMutableArray * const paths    = [NSMutableArray arrayWithCapacity:pathRefs.count];
+    for(id pathRef in pathRefs) {
+        
+        if([pathRef isKindOfClass:[NSArray class]]) {
+            [paths addObject:[self convertedPaths:pathRef attrs:cgAttrs]];
+        } else {
+            SVGBezierPath * const uiPath = [self bezierPathWithCGPath:(__bridge CGPathRef)pathRef];
+            uiPath->_svgAttributes = [cgAttrs attributesForPath:(__bridge CGPathRef)pathRef] ?: @{};
+            uiPath.lineWidth = uiPath->_svgAttributes[@"stroke-width"] ? [uiPath->_svgAttributes[@"stroke-width"] doubleValue] : 1.0;
+            [paths addObject:uiPath];
+        }
     }
     return paths;
 }

@@ -19,6 +19,7 @@ NSString * const kValidSVGCommands = @"CcMmLlHhVvZzQqTtAaSs";
 struct svgParser {
     svgParser(NSString *);
     NSArray *parse(NSMapTable **aoAttributes);
+    BOOL _shouldNestGroups = false;
 
 protected:
     NSString *_source;
@@ -105,6 +106,7 @@ NSArray *svgParser::parse(NSMapTable ** const aoAttributes)
         *aoAttributes = [NSMapTable mapTableWithKeyOptions:NSMapTableStrongMemory|NSMapTableObjectPointerPersonality
                                               valueOptions:NSMapTableStrongMemory];
     NSMutableArray * const paths = [NSMutableArray new];
+    NSMutableArray * const groupArrayStack = [NSMutableArray arrayWithObject:paths];
 
     NSUInteger depthWithinUnknownElement = 0;
 
@@ -135,14 +137,29 @@ NSArray *svgParser::parse(NSMapTable ** const aoAttributes)
         else if(type == XML_READER_TYPE_ELEMENT && strcasecmp(tag, "ellipse") == 0)
             path = readEllipseTag();
         else if(strcasecmp(tag, "g") == 0 || strcasecmp(tag, "a") == 0) {
-            if(type == XML_READER_TYPE_ELEMENT)
+            if(type == XML_READER_TYPE_ELEMENT) {
                 pushGroup(readAttributes());
-            else if(type == XML_READER_TYPE_END_ELEMENT)
+            
+                if(_shouldNestGroups) {
+                    [groupArrayStack addObject:[NSMutableArray new]];
+                }
+            }
+            else if(type == XML_READER_TYPE_END_ELEMENT) {
+                
+                if(_shouldNestGroups) {
+                    NSMutableArray *poppedGroup = [groupArrayStack lastObject];
+                    [groupArrayStack removeLastObject];
+                    
+                    // add this group to the array below
+                    [[groupArrayStack lastObject] addObject:poppedGroup];
+                }
+            
                 popGroup();
+            }
         } else if(type == XML_READER_TYPE_ELEMENT && !xmlTextReaderIsEmptyElement(_xmlReader))
             ++depthWithinUnknownElement;
         if(path) {
-            [paths addObject:CFBridgingRelease(path)];
+            [[groupArrayStack lastObject] addObject:CFBridgingRelease(path)];
             
             if(aoAttributes) {
                 NSDictionary * const attributes = readAttributes();
@@ -431,10 +448,23 @@ NSString *svgParser::readStringAttribute(NSString * const aName)
     return value ? @(value) : nil;
 }
 
+
 NSArray *CGPathsFromSVGString(NSString * const svgString, SVGAttributeSet **outAttributes)
 {
     NSMapTable *attributes;
     NSArray *paths = svgParser(svgString).parse(outAttributes ? &attributes : NULL);
+    if (outAttributes && (*outAttributes = [SVGAttributeSet new])) {
+        (*outAttributes)->_attributes = attributes;
+    }
+    return paths;
+}
+
+NSArray *NestedCGPathsFromSVGString(NSString *svgString, SVGAttributeSet **outAttributes)
+{
+    NSMapTable *attributes;
+    svgParser parser = svgParser(svgString);
+    parser._shouldNestGroups = true;
+    NSArray *paths = parser.parse(outAttributes ? &attributes : NULL);
     if (outAttributes && (*outAttributes = [SVGAttributeSet new])) {
         (*outAttributes)->_attributes = attributes;
     }
@@ -540,22 +570,29 @@ CF_RETURNS_RETAINED CGMutablePathRef pathDefinitionParser::parse()
         if([cmdBuf length] > 1) {
             scanner.scanLocation -= [cmdBuf length]-1;
         } else {
-            while (!scanner.isAtEnd) {
-                NSUInteger zeros = 0;
-                while ([scanner scanString:@"0" intoString:NULL]) { ++zeros; }
-                // Start of a 0.x ?
-                if (zeros > 0 && [scanner scanString:@"." intoString:NULL]) {
-                    --zeros;
-                    scanner.scanLocation -= 2;
-                }
-                for (NSUInteger i = 0; i < zeros; ++i) { _operands.push_back(0.0); }
-
-                float operand;
-                if (![scanner scanFloat:&operand]) {
-                    break;
-                }
-                _operands.push_back(operand);
-            }
+            
+            for(float operand;
+                [scanner scanFloat:&operand];
+                _operands.push_back(operand));
+            
+//            // the code below doesn't seem to account for - signs properly when parsing. I'm reverting to the previous parsing method here because that seems to work with all of our studio content.
+//            while (!scanner.isAtEnd) {
+//                NSUInteger zeros = 0;
+//                while ([scanner scanString:@"0" intoString:NULL]) { ++zeros; }
+//                // Start of a 0.x ?
+//                if (zeros > 0 && [scanner scanString:@"." intoString:NULL]) {
+//                    --zeros;
+//                    scanner.scanLocation -= 2;
+//                }
+//                for (NSUInteger i = 0; i < zeros; ++i) { _operands.push_back(0.0); }
+//
+//                float operand;
+//                if ([scanner scanFloat:&operand]) {
+//                    _operands.push_back(operand);
+//                } else {
+//                    break;
+//                }
+//            }
         }
 
 #ifdef SVG_PATH_SERIALIZER_DEBUG
